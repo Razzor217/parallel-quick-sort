@@ -13,11 +13,6 @@
  * - tasks? barrier synch?
  */
 
-namespace sequential
-{
-    
-}
-
 namespace parallel
 {
 

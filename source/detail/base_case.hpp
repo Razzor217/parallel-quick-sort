@@ -1,3 +1,13 @@
+/**
+ * @file base_case.hpp
+ * @author Max Beddies (max dot beddies at t minus online dot de)
+ * @brief Definitions for base case sorting
+ * @date 2021-02-13
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #pragma once
 
 #include <iterator>

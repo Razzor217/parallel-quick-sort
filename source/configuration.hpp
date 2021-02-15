@@ -1,3 +1,13 @@
+/**
+ * @file configuration.hpp
+ * @author Max Beddies (max dot beddies at t minus online dot de)
+ * @brief Definition of sorter configurations
+ * @date 2021-02-15
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #pragma once
 
 #include <cstddef>

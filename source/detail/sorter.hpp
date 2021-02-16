@@ -21,5 +21,11 @@ namespace detail
         using iterator = config::iterator;
         using difference_type = config::difference_type;
         using value_type = config::value_type;
+        using less = config::less;
+
+        void sequential(const iterator start, const iterator end);
+
+    private:
+        less cmp_;
     };
 }

@@ -72,7 +72,7 @@ namespace detail
      */
     template <class random_access_iterator>
     inline void insertion_sort(random_access_iterator start,
-                        random_access_iterator end)
+                               random_access_iterator end)
     {
         using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
         insertion_sort(std::move(start), std::move(end), std::less<value_type>());

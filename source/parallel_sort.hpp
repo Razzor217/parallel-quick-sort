@@ -1,3 +1,13 @@
+/**
+ * @file parallel_sort.hpp
+ * @author Max Beddies (max dot beddies at t minus online dot de)
+ * @brief Definition of parallel quick sort interface methods
+ * @date 2021-02-17
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #pragma once
 
 #include "detail/base_case.hpp"

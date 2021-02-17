@@ -1,7 +1,10 @@
 set(HEADERS
     ./detail/base_case.hpp
     ./detail/selection.hpp
+    ./detail/sequential.hpp
+    ./detail/sorter.hpp
 
+    ./configuration.hpp
     ./parallel_sort.hpp
 )
 

@@ -23,9 +23,29 @@ namespace detail
         using value_type = config::value_type;
         using less = config::less;
 
-        void sequential(const iterator start, const iterator end);
+        /**
+         * @brief Effiecient sequential implementation of quick sort
+         * 
+         * @param begin Iterator to the begin of the thread-local input
+         * @param end Iterator to the end of the thread-local input
+         */
+        void sequential(const iterator begin, const iterator end);
+
+        /*
+         * TODO:
+         * complete constructor
+         */ 
+
+        /**
+         * @brief Construct a new sorter object
+         * 
+         * @param cmp Comparison function object
+         */
+        sorter(less cmp) :
+            cmp_ {std::move(cmp)}
+        {}
 
     private:
         less cmp_;
     };
-}
+} // namespace detail

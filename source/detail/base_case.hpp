@@ -19,20 +19,20 @@ namespace detail
 {
     /**
      * @brief Performs insertion sort on an input sequence specified by the 
-     * range [start, end).
+     * range [`begin`, `end`).
      * 
      * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
      * @tparam comparator Comparison function object
-     * @param start Iterator to the start of the input sequence
+     * @param begin Iterator to the begin of the input sequence
      * @param end Iterator to the end of the input sequence
      * @param cmp Comparison function object to use
      */
     template <class random_access_iterator, class comparator>
-    void insertion_sort(const random_access_iterator start,
+    void insertion_sort(const random_access_iterator begin,
                         const random_access_iterator end,
                         comparator cmp)
     {
-        for (random_access_iterator i {start + 1}; i < end; ++i)
+        for (random_access_iterator i {begin + 1}; i < end; ++i)
         {
             /*
              * - If e is smaller than all previously inserted elements, 
@@ -42,13 +42,13 @@ namespace detail
              *   element is smaller than or equal to e). 
              */
             const typename std::iterator_traits<random_access_iterator>::value_type e {std::move(*i)};
-            if (cmp(e, *start))
+            if (cmp(e, *begin))
             {
-                for (random_access_iterator j {i}; j > start; --j)
+                for (random_access_iterator j {i}; j > begin; --j)
                 {
                     *j = std::move(*(j - 1));
                 }
-                *start = std::move(e);
+                *begin = std::move(e);
             }
             else
             {
@@ -64,76 +64,76 @@ namespace detail
 
     /**
      * @brief Performs insertion sort on an input sequence specified by the 
-     * range [start, end).
+     * range [`begin`, `end`).
      * 
      * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
-     * @param start Iterator to the start of the input sequence
+     * @param begin Iterator to the begin of the input sequence
      * @param end Iterator to the end of the input sequence
      */
     template <class random_access_iterator>
-    inline void insertion_sort(random_access_iterator start,
+    inline void insertion_sort(random_access_iterator begin,
                                random_access_iterator end)
     {
         using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
-        insertion_sort(std::move(start), std::move(end), std::less<value_type>());
+        insertion_sort(std::move(begin), std::move(end), std::less<value_type>());
     }
 
     /**
      * @brief Invokes a sorter suitable for small sequences on the input 
-     * specified by the range [start, end).
+     * specified by the range [`begin`, `end`).
      * 
      * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
      * @tparam comparator Comparison function object
-     * @param start Iterator to the start of the input sequence
+     * @param begin Iterator to the begin of the input sequence
      * @param end Iterator to the end of the input sequence
      * @param cmp Comparison function object
      */
     template <class random_access_iterator, class comparator>
-    inline void small_sort(random_access_iterator start,
+    inline void small_sort(random_access_iterator begin,
                            random_access_iterator end,
                            comparator&& cmp)
     {
-        if (start == end)
+        if (begin == end)
         {
             return;
         }
-        detail::insertion_sort(std::move(start), std::move(end), std::forward<comparator>(cmp));
+        detail::insertion_sort(std::move(begin), std::move(end), std::forward<comparator>(cmp));
     }
 
     /**
      * @brief Invokes a sorter suitable for small sequences on the input 
-     * specified by the range [start, end).
+     * specified by the range [`begin`, `end`).
      * 
      * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
-     * @param start Iterator to the start of the input sequence
+     * @param begin Iterator to the begin of the input sequence
      * @param end Iterator to the end of the input sequence
      */
     template <class random_access_iterator>
-    inline void small_sort(random_access_iterator start, 
+    inline void small_sort(random_access_iterator begin, 
                            random_access_iterator end)
     {
         using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
-        detail::small_sort(std::move(start), std::move(end), std::less<value_type>());
+        detail::small_sort(std::move(begin), std::move(end), std::less<value_type>());
     }
 
     /**
      * @brief Checks whether an input sequence specified by the range 
-     * [start, end) is (reverse) sorted already.
+     * [`begin`, `end`) is (reverse) sorted already.
      * 
      * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
      * @tparam comparator Comparison function object
-     * @param start Iterator to the start of the input sequence
+     * @param begin Iterator to the begin of the input sequence
      * @param end Iterator to the end of the input sequence
      * @param cmp Comparison function object
      * @return true if the input is (reverse) sorted
      * @return false otherwise
      */
     template <class random_access_iterator, class comparator>
-    bool check_sorted(random_access_iterator start,
+    bool check_sorted(random_access_iterator begin,
                       random_access_iterator end, 
                       comparator&& cmp)
     {
-        if (start == end)
+        if (begin == end)
         {
             return true;
         }
@@ -145,13 +145,13 @@ namespace detail
          * - Otherwise, check if the input sequence is reverse sorted. In this 
          *   case, reverse the input sequence.
          */
-        if (!cmp(*(end - 1), *start))
+        if (!cmp(*(end - 1), *begin))
         {
-            return std::is_sorted(start, end, cmp);
+            return std::is_sorted(begin, end, cmp);
         }
         else
         {
-            for (random_access_iterator it {start}; it != end; ++it)
+            for (random_access_iterator it {begin}; it != end; ++it)
             {
                 if (cmp(*it, *(it + 1)))
                 {
@@ -159,26 +159,26 @@ namespace detail
                 }
             }
 
-            std::reverse(start, end);
+            std::reverse(begin, end);
             return true;
         }
     }
 
     /**
      * @brief Checks whether an input sequence specified by the range 
-     * [start, end) is (reverse) sorted already.
+     * [`begin`, `end`) is (reverse) sorted already.
      * 
      * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
-     * @param start Iterator to the start of the input sequence
+     * @param begin Iterator to the begin of the input sequence
      * @param end Iterator to the end of the input sequence
      * @return true if the input is (reverse) sorted
      * @return false otherwise
      */
     template <class random_access_iterator>
-    inline bool check_sorted(random_access_iterator start, 
+    inline bool check_sorted(random_access_iterator begin, 
                              random_access_iterator end)
     {
         using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
-        return detail::check_sorted(std::move(start), std::move(end), std::less<value_type>());
+        return detail::check_sorted(std::move(begin), std::move(end), std::less<value_type>());
     }
-}
+} // namespace detail

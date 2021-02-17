@@ -55,7 +55,7 @@ public:
 template <class random_access_iterator,
           class comparator,
           class config = configuration<>>
-class extended_configuration : public configuration
+class extended_configuration : public config
 {
 public:
     /**

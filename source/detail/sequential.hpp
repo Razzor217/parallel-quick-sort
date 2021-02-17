@@ -17,9 +17,9 @@
 namespace detail
 {
     template <class config>
-    void sorter<config>::sequential(const iterator begin, const iterator end)
+    void sorter<config>::sequential(iterator begin, iterator end)
     {
-        auto swap = [](const iterator i, const iterator j)
+        auto swap = [](iterator i, iterator j)
         {
             value_type tmp {std::move(*i)};
             *i = std::move(*j);
@@ -56,7 +56,7 @@ namespace detail
             /*
              * Recurse on smaller partition
              */
-            if (i < begin + (begin + end >> 1))
+            if (i < begin + (end - begin >> 1))
             {
                 sequential(begin, j);
                 begin = std::move(i);
@@ -90,13 +90,13 @@ public:
      * @brief Iterator type for the input data
      * 
      */
-    using iterator = config::iterator;
+    using iterator = typename config::iterator;
 
     /**
      * @brief Comparison function object
      * 
      */
-    using less = config::less;
+    using less = typename config::less;
 
     /**
      * @brief Function call operator, invokes sequential quick sort
@@ -104,7 +104,7 @@ public:
      * @param begin Iterator to the begin of the input data
      * @param end Iterator to the end of the input data
      */
-    void operator()(const iterator begin, const iterator end)
+    void operator()(iterator begin, iterator end)
     {
         if (check_sorted_ && detail::check_sorted(begin, end, cmp_))
         {

@@ -15,6 +15,9 @@
 #include "detail/sequential.hpp"
 #include "configuration.hpp"
 
+namespace dummy
+{
+
 /**
  * @brief Helper function for creating reusable sorters
  * 
@@ -101,3 +104,5 @@ namespace parallel
 {
 
 } // namespace parallel
+
+} // namespace dummy

@@ -18,10 +18,10 @@ namespace detail
     class sorter
     {
     public:
-        using iterator = config::iterator;
-        using difference_type = config::difference_type;
-        using value_type = config::value_type;
-        using less = config::less;
+        using iterator = typename config::iterator;
+        using difference_type = typename config::difference_type;
+        using value_type = typename config::value_type;
+        using less = typename config::less;
 
         /**
          * @brief Effiecient sequential implementation of quick sort

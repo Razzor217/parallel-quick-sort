@@ -1,4 +1,7 @@
-#include <iostream>
+#define BOOST_TEST_MODULE detail::selection
+
+#include <boost/test/included/unit_test.hpp>
+
 #include <vector>
 #include <algorithm>
 #include <numeric>
@@ -6,44 +9,67 @@
 
 #include "../detail/selection.hpp"
 
-namespace test
+BOOST_AUTO_TEST_CASE(test_median_of_three_middle1)
 {
-    bool test_median_of_three()
-    {
-        std::vector<int> data {0, 1, 2};
-        return detail::median_of_three(data.begin(), data.begin() + 1, data.begin() + 2) == (data.begin() + 1);
-    }
+    std::vector<int> data = {0, 1, 2};
 
-    bool test_pseudo_median_of_nine()
-    {
-        std::vector<int> data {0, 1, 2, 3, 4, 5, 6, 7, 8};
-        return detail::pseudo_median_of_nine(data.begin(), data.end()) == (data.begin() + 4);
-    }
+    auto it = detail::median_of_three(data.begin(),
+                                      data.begin() + 1,
+                                      data.begin() + 2);
+    BOOST_CHECK_EQUAL(*it, 1);
 }
 
-int main(int argc, char** argv)
+BOOST_AUTO_TEST_CASE(test_median_of_three_middle2)
 {
+    std::vector<int> data = {2, 1, 0};
 
-    const bool test1 {test::test_median_of_three()};
-    const bool test2 {test::test_pseudo_median_of_nine()};
-
-    if (test1)
-    {
-        std::cout << "median of three successful" << std::endl;
-    }
-    else
-    {
-        std::cout << "median of three failed" << std::endl;
-    }
-
-    if (test2)
-    {
-        std::cout << "pseudo median of nine successful" << std::endl;
-    }
-    else
-    {
-        std::cout << "pseudo median of nine failed" << std::endl;
-    }
-    
-    return 0;
+    auto it = detail::median_of_three(data.begin(),
+                                      data.begin() + 1,
+                                      data.begin() + 2);
+    BOOST_CHECK_EQUAL(*it, 1);
 }
+
+BOOST_AUTO_TEST_CASE(test_median_of_three_left1)
+{
+    std::vector<int> data = {1, 0, 2};
+
+    auto it = detail::median_of_three(data.begin(),
+                                      data.begin() + 1,
+                                      data.begin() + 2);
+    BOOST_CHECK_EQUAL(*it, 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_median_of_three_left2)
+{
+    std::vector<int> data = {1, 2, 0};
+
+    auto it = detail::median_of_three(data.begin(),
+                                      data.begin() + 1,
+                                      data.begin() + 2);
+    BOOST_CHECK_EQUAL(*it, 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_median_of_three_right1)
+{
+    std::vector<int> data = {1, 0, 2};
+
+    auto it = detail::median_of_three(data.begin(),
+                                      data.begin() + 1,
+                                      data.begin() + 2);
+    BOOST_CHECK_EQUAL(*it, 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_median_of_three_right2)
+{
+    std::vector<int> data = {1, 2, 0};
+
+    auto it = detail::median_of_three(data.begin(),
+                                      data.begin() + 1,
+                                      data.begin() + 2);
+    BOOST_CHECK_EQUAL(*it, 1);
+}
+
+/*
+ * TODO:
+ * add tests for median of nine
+ */

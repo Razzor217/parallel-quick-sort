@@ -14,6 +14,6 @@ BOOST_AUTO_TEST_CASE(test_sequential_quick_sort)
     std::vector<int> data(128);
     std::iota(data.begin(), data.end(), 0);
 
-    dummy::sort(data.begin(), data.end());
+    qsmb::sort(data.begin(), data.end());
     BOOST_CHECK(std::is_sorted(data.begin(), data.end()));
 }

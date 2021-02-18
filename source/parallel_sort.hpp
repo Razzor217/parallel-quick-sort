@@ -15,94 +15,94 @@
 #include "detail/sequential.hpp"
 #include "configuration.hpp"
 
-namespace dummy
+namespace qsmb
 {
 
-/**
- * @brief Helper function for creating reusable sorters
- * 
- * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
- * @tparam comparator Comparison function object
- * @tparam config Sorter configuration
- * @param cmp Comparison function object
- * @return Sequential sorter with the user configuration 
- */
-template <class random_access_iterator,
-          class comparator = std::less<>,
-          class config = configuration<>>
-sequential_sorter<extended_configuration<random_access_iterator, comparator, config>>
-make_sorter(comparator cmp = {})
-{
-    return sequential_sorter<extended_configuration<random_access_iterator, comparator, config>> {true, std::move(cmp)};
-}
-
-/**
- * @brief Configurable interface for sequential quick sort
- * 
- * @tparam config Sorter configuration
- * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
- * @tparam comparator Comparison function object
- * @param begin Iterator to the begin of the input data
- * @param end Iterator to the end of the input data
- * @param cmp Comparison function object
- */
-template <class config,
-          class random_access_iterator,
-          class comparator = std::less<>>
-void sort(const random_access_iterator begin,
-          const random_access_iterator end,
-          comparator cmp = {})
-{
-    if (detail::check_sorted(begin, end, cmp))
+    /**
+     * @brief Helper function for creating reusable sorters
+     * 
+     * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
+     * @tparam comparator Comparison function object
+     * @tparam config Sorter configuration
+     * @param cmp Comparison function object
+     * @return Sequential sorter with the user configuration 
+     */
+    template <class random_access_iterator,
+            class comparator = std::less<>,
+            class config = configuration<>>
+    sequential_sorter<extended_configuration<random_access_iterator, comparator, config>>
+    make_sorter(comparator cmp = {})
     {
-        return;
+        return sequential_sorter<extended_configuration<random_access_iterator, comparator, config>> {true, std::move(cmp)};
     }
 
-    if (end - begin <= config::base_case_multiplier * config::base_case_size)
+    /**
+     * @brief Configurable interface for sequential quick sort
+     * 
+     * @tparam config Sorter configuration
+     * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
+     * @tparam comparator Comparison function object
+     * @param begin Iterator to the begin of the input data
+     * @param end Iterator to the end of the input data
+     * @param cmp Comparison function object
+     */
+    template <class config,
+            class random_access_iterator,
+            class comparator = std::less<>>
+    void sort(const random_access_iterator begin,
+            const random_access_iterator end,
+            comparator cmp = {})
     {
-        detail::small_sort(std::move(begin), std::move(end), std::move(cmp));
+        if (detail::check_sorted(begin, end, cmp))
+        {
+            return;
+        }
+
+        if (end - begin <= config::base_case_multiplier * config::base_case_size)
+        {
+            detail::small_sort(std::move(begin), std::move(end), std::move(cmp));
+        }
+        else
+        {
+            sequential_sorter<extended_configuration<random_access_iterator, comparator, config>>(false, std::move(cmp))
+                (std::move(begin), std::move(end));
+        }
     }
-    else
+
+    /**
+     * @brief Standard interface for sequential quick sort
+     * 
+     * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
+     * @tparam comparator Comparison function object
+     * @param begin Iterator to the begin of the input data
+     * @param end Iterator to the end of the input data
+     * @param cmp Comparison function object
+     */
+    template <class random_access_iterator, class comparator>
+    void sort(const random_access_iterator begin,
+            const random_access_iterator end,
+            comparator cmp)
     {
-        sequential_sorter<extended_configuration<random_access_iterator, comparator, config>>(false, std::move(cmp))
-            (std::move(begin), std::move(end));
+        sort<configuration<>>(std::move(begin), std::move(end), std::move(cmp));
     }
-}
 
-/**
- * @brief Standard interface for sequential quick sort
- * 
- * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
- * @tparam comparator Comparison function object
- * @param begin Iterator to the begin of the input data
- * @param end Iterator to the end of the input data
- * @param cmp Comparison function object
- */
-template <class random_access_iterator, class comparator>
-void sort(const random_access_iterator begin,
-          const random_access_iterator end,
-          comparator cmp)
-{
-    sort<configuration<>>(std::move(begin), std::move(end), std::move(cmp));
-}
+    /**
+     * @brief Standard interface for sequential quick sort
+     * 
+     * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
+     * @param begin Iterator to the begin of the input data
+     * @param end Iterator to the end of the input data
+     */
+    template <class random_access_iterator>
+    void sort(const random_access_iterator begin,
+            const random_access_iterator end)
+    {
+        sort<configuration<>>(std::move(begin), std::move(end), std::less<>());
+    }
 
-/**
- * @brief Standard interface for sequential quick sort
- * 
- * @tparam random_access_iterator Iterator type meeting the requirements of random access iterators
- * @param begin Iterator to the begin of the input data
- * @param end Iterator to the end of the input data
- */
-template <class random_access_iterator>
-void sort(const random_access_iterator begin,
-          const random_access_iterator end)
-{
-    sort<configuration<>>(std::move(begin), std::move(end), std::less<>());
-}
+    namespace parallel
+    {
 
-namespace parallel
-{
+    } // namespace parallel
 
-} // namespace parallel
-
-} // namespace dummy
+} // namespace qsmb

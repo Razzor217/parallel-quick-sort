@@ -12,40 +12,43 @@
 
 #include <iterator>
 
-namespace detail
+namespace qsmb
 {
-    template <class config>
-    class sorter
+    namespace detail
     {
-    public:
-        using iterator = typename config::iterator;
-        using difference_type = typename config::difference_type;
-        using value_type = typename config::value_type;
-        using less = typename config::less;
+        template <class config>
+        class sorter
+        {
+        public:
+            using iterator = typename config::iterator;
+            using difference_type = typename config::difference_type;
+            using value_type = typename config::value_type;
+            using less = typename config::less;
 
-        /**
-         * @brief Effiecient sequential implementation of quick sort
-         * 
-         * @param begin Iterator to the begin of the thread-local input
-         * @param end Iterator to the end of the thread-local input
-         */
-        void sequential(const iterator begin, const iterator end);
+            /**
+             * @brief Effiecient sequential implementation of quick sort
+             * 
+             * @param begin Iterator to the begin of the thread-local input
+             * @param end Iterator to the end of the thread-local input
+             */
+            void sequential(const iterator begin, const iterator end);
 
-        /*
-         * TODO:
-         * complete constructor
-         */ 
+            /*
+            * TODO:
+            * complete constructor
+            */ 
 
-        /**
-         * @brief Construct a new sorter object
-         * 
-         * @param cmp Comparison function object
-         */
-        sorter(less cmp) :
-            cmp_ {std::move(cmp)}
-        {}
+            /**
+             * @brief Construct a new sorter object
+             * 
+             * @param cmp Comparison function object
+             */
+            sorter(less cmp) :
+                cmp_ {std::move(cmp)}
+            {}
 
-    private:
-        less cmp_;
-    };
-} // namespace detail
+        private:
+            less cmp_;
+        };
+    } // namespace detail
+} // namespace qsmb

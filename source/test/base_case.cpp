@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(test_small_sort)
 
     std::shuffle(data.begin(), data.end(), generator);
 
-    detail::small_sort(data.begin(), data.end());
+    qsmb::detail::small_sort(data.begin(), data.end());
     BOOST_CHECK(std::is_sorted(data.begin(), data.end()));
 }
 
@@ -27,9 +27,9 @@ BOOST_AUTO_TEST_CASE(test_check_sorted)
     std::vector<int> data(128);
     std::iota(data.begin(), data.end(), 0);
 
-    BOOST_CHECK(std::is_sorted(data.begin(), data.end()));
-    BOOST_CHECK(std::is_sorted(data.rbegin(), data.rend()));
+    BOOST_CHECK(qsmb::detail::check_sorted(data.begin(), data.end()));
+    BOOST_CHECK(qsmb::detail::check_sorted(data.rbegin(), data.rend()));
 
     data[0] = 128;
-    BOOST_CHECK(std::is_sorted(data.begin(), data.end()));
+    BOOST_CHECK(!qsmb::detail::check_sorted(data.begin(), data.end()));
 }

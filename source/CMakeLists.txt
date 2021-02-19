@@ -9,6 +9,8 @@ if(Boost_FOUND)
 endif()
 
 set(HEADERS
+    ./detail/barrier.hpp
+
     ./detail/base_case.hpp
     ./detail/selection.hpp
     ./detail/sequential.hpp

@@ -49,9 +49,9 @@ namespace qsmb
     template <class config,
             class random_access_iterator,
             class comparator = std::less<>>
-    void sort(const random_access_iterator begin,
-            const random_access_iterator end,
-            comparator cmp = {})
+    void sort(random_access_iterator begin,
+              random_access_iterator end,
+              comparator cmp = {})
     {
         if (detail::check_sorted(begin, end, cmp))
         {
@@ -79,9 +79,9 @@ namespace qsmb
      * @param cmp Comparison function object
      */
     template <class random_access_iterator, class comparator>
-    void sort(const random_access_iterator begin,
-            const random_access_iterator end,
-            comparator cmp)
+    void sort(random_access_iterator begin,
+              random_access_iterator end,
+              comparator cmp)
     {
         sort<configuration<>>(std::move(begin), std::move(end), std::move(cmp));
     }
@@ -94,8 +94,8 @@ namespace qsmb
      * @param end Iterator to the end of the input data
      */
     template <class random_access_iterator>
-    void sort(const random_access_iterator begin,
-            const random_access_iterator end)
+    void sort(random_access_iterator begin,
+              random_access_iterator end)
     {
         sort<configuration<>>(std::move(begin), std::move(end), std::less<>());
     }

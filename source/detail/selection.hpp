@@ -31,9 +31,9 @@ namespace qsmb
          */
         template <class random_access_iterator, class comparator>
         inline random_access_iterator
-        median_of_three(const random_access_iterator left,
-                        const random_access_iterator middle,
-                        const random_access_iterator right,
+        median_of_three(random_access_iterator left,
+                        random_access_iterator middle,
+                        random_access_iterator right,
                         comparator cmp)
         {
             return (cmp(*middle, *left) ^ cmp(*middle, *right)) ? middle :
@@ -51,9 +51,9 @@ namespace qsmb
          */
         template <class random_access_iterator>
         inline random_access_iterator
-        median_of_three(const random_access_iterator left,
-                        const random_access_iterator middle,
-                        const random_access_iterator right)
+        median_of_three(random_access_iterator left,
+                        random_access_iterator middle,
+                        random_access_iterator right)
         {
             using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
             return detail::median_of_three(std::move(left),
@@ -74,9 +74,9 @@ namespace qsmb
          */
         template <class random_access_iterator, class comparator>
         inline random_access_iterator
-        pseudo_median_of_nine(const random_access_iterator begin,
-                            const random_access_iterator end,
-                            comparator cmp)
+        pseudo_median_of_nine(random_access_iterator begin,
+                              random_access_iterator end,
+                              comparator cmp)
         {
             const std::ptrdiff_t d {(end - begin) >> 3};
             return detail::median_of_three(detail::median_of_three(begin, begin + d, begin + 2 * d, cmp),
@@ -95,8 +95,8 @@ namespace qsmb
          */
         template <class random_access_iterator>
         inline random_access_iterator
-        pseudo_median_of_nine(const random_access_iterator begin,
-                            const random_access_iterator end)
+        pseudo_median_of_nine(random_access_iterator begin,
+                              random_access_iterator end)
         {
             using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
             return detail::pseudo_median_of_nine(std::move(begin),

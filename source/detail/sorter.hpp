@@ -31,7 +31,7 @@ namespace qsmb
              * @param begin Iterator to the begin of the thread-local input
              * @param end Iterator to the end of the thread-local input
              */
-            void sequential(const iterator begin, const iterator end);
+            void sequential(iterator begin, iterator end);
 
             /*
             * TODO:

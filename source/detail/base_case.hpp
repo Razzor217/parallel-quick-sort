@@ -30,8 +30,8 @@ namespace qsmb
          * @param cmp Comparison function object to use
          */
         template <class random_access_iterator, class comparator>
-        void insertion_sort(const random_access_iterator begin,
-                            const random_access_iterator end,
+        void insertion_sort(random_access_iterator begin,
+                            random_access_iterator end,
                             comparator cmp)
         {
             for (random_access_iterator i {begin + 1}; i < end; ++i)
@@ -74,7 +74,7 @@ namespace qsmb
          */
         template <class random_access_iterator>
         inline void insertion_sort(random_access_iterator begin,
-                                random_access_iterator end)
+                                   random_access_iterator end)
         {
             using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
             insertion_sort(std::move(begin), std::move(end), std::less<value_type>());
@@ -92,8 +92,8 @@ namespace qsmb
          */
         template <class random_access_iterator, class comparator>
         inline void small_sort(random_access_iterator begin,
-                            random_access_iterator end,
-                            comparator&& cmp)
+                               random_access_iterator end,
+                               comparator&& cmp)
         {
             if (begin == end)
             {
@@ -112,7 +112,7 @@ namespace qsmb
          */
         template <class random_access_iterator>
         inline void small_sort(random_access_iterator begin, 
-                            random_access_iterator end)
+                               random_access_iterator end)
         {
             using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
             detail::small_sort(std::move(begin), std::move(end), std::less<value_type>());
@@ -132,8 +132,8 @@ namespace qsmb
          */
         template <class random_access_iterator, class comparator>
         bool check_sorted(random_access_iterator begin,
-                        random_access_iterator end, 
-                        comparator&& cmp)
+                          random_access_iterator end, 
+                          comparator&& cmp)
         {
             if (begin == end)
             {
@@ -178,7 +178,7 @@ namespace qsmb
          */
         template <class random_access_iterator>
         inline bool check_sorted(random_access_iterator begin, 
-                                random_access_iterator end)
+                                 random_access_iterator end)
         {
             using value_type = typename std::iterator_traits<random_access_iterator>::value_type;
             return detail::check_sorted(std::move(begin), std::move(end), std::less<value_type>());

@@ -17,6 +17,8 @@ set(HEADERS
     ./detail/sorter.hpp
 
     ./configuration.hpp
+    ./thread_pool.hpp
+
     ./parallel_sort.hpp
 )
 

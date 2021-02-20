@@ -21,18 +21,33 @@
 
 namespace qsmb
 {
+    /**
+     * @brief Wrapper for std::thread providing thread pool functionality
+     * 
+     */
     class std_thread_pool
     {
     public:
+        /**
+         * @brief Synchronization mechanism used by the std::thread pool
+         * 
+         */
         using sync = detail::barrier;
 
+        /**
+         * @brief Function call operator, invokes `func` on every thread of the pool
+         * 
+         * @tparam F Target function type to invoke
+         * @param func Target function to invoke
+         * @param num_threads Number of threads of the std::thread pool
+         */
         template <class F>
         void operator ()(F&& func, int num_threads = std::numeric_limits<int>::max())
         {
             num_threads = std::min(num_threads, num_threads());
             if (num_threads > 1)
             {
-                impl_->run(func, num_threads);
+                impl_->run(std::forward<F>(func), num_threads);
             }
             else
             {
@@ -40,17 +55,52 @@ namespace qsmb
             }
         }
 
+        /**
+         * @brief Get the synchronization object used by the std::thread pool
+         * 
+         * @return sync& Reference to the synchronization object
+         */
         inline sync& get_sync() { return impl_->get_sync(); }
+
+        /**
+         * @brief Get the number of available threads in the std::thread pool 
+         * 
+         * @return int Number of available threads
+         */
         inline int num_threads() { return impl_->num_threads(); }
+
+        /**
+         * @brief Get the maximum (possible) number of available threads
+         * 
+         * @return int Maximum number of available threads
+         */
+        inline static int max_num_threads() { return std::thread::hardware_concurrency(); }
+
+        /**
+         * @brief Construct a new std thread pool object
+         * 
+         * @param num_threads Number of threads maintained by the std::thread pool
+         */
+        explicit std_thread_pool(int num_threads = std_thread_pool::max_num_threads()) :
+            impl_ {new impl {num_threads}}
+        {}
 
     private:
         class impl
         {
         public:
+            /**
+             * @brief Main execution loop of all threads in the std::thread pool
+             * 
+             * @param thread_id ID of the executing thread
+             */
             void main_loop(const int thread_id)
             {
                 for (;;)
                 {
+                    /*
+                     * wait at barrier until main thread executes @see impl::run() 
+                     */
                     barrier_.arrive_and_wait();
                     if (done_)
                     {
@@ -64,6 +114,13 @@ namespace qsmb
                 }
             }
 
+            /**
+             * @brief Entry point for parallel execution
+             * 
+             * @tparam F Function type to invoke
+             * @param func Function to invoke on every thread of the std::thread pool
+             * @param num_threads Number of threads to invoke `func` on 
+             */
             template <class F>
             void run(F&& func, const int num_threads)
             {
@@ -79,9 +136,25 @@ namespace qsmb
                 barrier_.arrive_and_wait();
             }
 
+            /**
+             * @brief Get the syncronization object used by the std::thread pool
+             * 
+             * @return sync& Reference to the synchronization object
+             */
             inline sync& get_sync() { return sync_; }
+
+            /**
+             * @brief Get the number of threads maintained by the std::thread pool
+             * 
+             * @return int Number of maintained threads
+             */
             inline int num_threads() { return threads_.size() + 1; }
 
+            /**
+             * @brief Construct a new impl object
+             * 
+             * @param num_threads Number of threads maintained by the std::thread pool
+             */
             impl(const int num_threads) :
                 sync_ {std::max(1, num_threads)},
                 barrier_ {std::max(1, num_threads)},
@@ -94,6 +167,10 @@ namespace qsmb
                 }
             }
 
+            /**
+             * @brief Destroy the impl object
+             * 
+             */
             ~impl()
             {
                 done_ = true;

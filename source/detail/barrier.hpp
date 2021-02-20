@@ -42,7 +42,11 @@ namespace qsmb
             barrier& operator =(barrier&&) = delete;
 
             /**
-             * @brief Arrive 
+             * @brief Arrive at the barrier and block 
+             * 
+             * Arrive at the barrier, decrement the internal counter and block
+             * the current thread until the expected number of threads arrive at the 
+             * barrier
              * 
              */
             inline void arrive_and_wait()
@@ -71,6 +75,11 @@ namespace qsmb
             }
 
         private:
+            /**
+             * @brief Unblocks all threads currently waiting
+             * 
+             * @param lock Lock held the last arriving thread
+             */
             inline void notify_all(std::unique_lock<std::mutex>& lock)
             {
                 hit_count_ = init_count_;

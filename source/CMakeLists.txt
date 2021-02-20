@@ -9,6 +9,7 @@ if(Boost_FOUND)
 endif()
 
 set(HEADERS
+    ./detail/aligned_ptr.hpp
     ./detail/barrier.hpp
 
     ./detail/base_case.hpp

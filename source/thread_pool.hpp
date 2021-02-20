@@ -168,7 +168,7 @@ namespace qsmb
             }
 
             /**
-             * @brief Destroy the impl object
+             * @brief Destroy the impl object 
              * 
              */
             ~impl()

@@ -17,6 +17,8 @@ set(HEADERS
     ./detail/sequential.hpp
     ./detail/sorter.hpp
 
+    ./detail/util.hpp
+
     ./configuration.hpp
     ./thread_pool.hpp
 

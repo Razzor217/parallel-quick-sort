@@ -44,7 +44,7 @@ namespace qsmb
         template <class F>
         void operator ()(F&& func, int num_threads = std::numeric_limits<int>::max())
         {
-            num_threads = std::min(num_threads, num_threads());
+            num_threads = std::min(num_threads, num_threads);
             if (num_threads > 1)
             {
                 impl_->run(std::forward<F>(func), num_threads);

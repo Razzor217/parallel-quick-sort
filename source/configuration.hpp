@@ -13,12 +13,23 @@
 #include <cstddef>
 #include <iterator>
 
+#include "thread_pool.hpp"
+#include "detail/util.hpp"
+
 #ifndef BASE_CASE_SIZE
 #define BASE_CASE_SIZE 16
 #endif
 
 #ifndef BASE_CASE_MULTIPLIER
 #define BASE_CASE_MULTIPLIER 16
+#endif
+
+#ifndef BLOCK_SIZE
+#define BLOCK_SIZE (2 << 10)
+#endif
+
+#ifndef DATA_ALIGNMENT
+#define DATA_ALIGNMENT (4 << 10)
 #endif
 
 namespace qsmb
@@ -30,7 +41,9 @@ namespace qsmb
      * @tparam base_case_multiplier_ Multiplier for the base case threshold
      */
     template <std::ptrdiff_t base_case_size_ = BASE_CASE_SIZE,
-            std::ptrdiff_t base_case_multiplier_ = BASE_CASE_MULTIPLIER>
+              std::ptrdiff_t base_case_multiplier_ = BASE_CASE_MULTIPLIER,
+              std::ptrdiff_t block_size_ = BLOCK_SIZE,
+              std::ptrdiff_t data_alignment_ = DATA_ALIGNMENT>
     class configuration
     {
     public:
@@ -45,6 +58,18 @@ namespace qsmb
          * 
          */
         static constexpr const std::ptrdiff_t base_case_multiplier {base_case_multiplier_};
+
+        /**
+         * @brief Number of bytes per block
+         * 
+         */
+        static constexpr const std::ptrdiff_t block_size {block_size_};
+
+        /**
+         * @brief Alignment for shared and thread-local data
+         * 
+         */
+        static constexpr const std::ptrdiff_t data_alignment {data_alignment_};
     };
 
     /**
@@ -55,8 +80,9 @@ namespace qsmb
      * @tparam config Base configuration for the sorters, @see configuration
      */
     template <class random_access_iterator,
-            class comparator,
-            class config = configuration<>>
+              class comparator,
+              class config = configuration<>,
+              class thread_pool_ = std_thread_pool>
     class extended_configuration : public config
     {
     public:
@@ -91,6 +117,18 @@ namespace qsmb
         using base_config = config;
 
         /**
+         * @brief Thread pool for parallel execution
+         * 
+         */
+        using thread_pool = thread_pool_;
+
+        /**
+         * @brief Synchronization mechanism for parallel execution
+         * 
+         */
+        using sync = typename thread_pool::sync;
+
+        /**
          * @brief Desired base case threshold
          * 
          */
@@ -101,6 +139,27 @@ namespace qsmb
          * 
          */
         static constexpr const difference_type base_case_multiplier {config::base_case_multiplier};
+
+        /**
+         * @brief Number of elements in one block
+         * 
+         */
+        static constexpr const difference_type block_size 
+        {
+            1 << detail::log2t(config::block_size < sizeof(value_type) ? 1 : 
+                               config::block_size / sizeof(value_type))
+        };
+
+        /**
+         * @brief Aligns an offset to the next block boundary
+         * 
+         * @param offset Offset to align
+         * @return Offset aligned to block boundary 
+         */
+        static constexpr difference_type align_to_next_block(difference_type offset)
+        {
+            return (offset + block_size - 1) & ~(block_size - 1);
+        }
     };
 
     #undef BASE_CASE_SIZE

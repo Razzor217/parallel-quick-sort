@@ -18,6 +18,7 @@ set(HEADERS
     ./detail/base_case.hpp
     ./detail/selection.hpp
     ./detail/sequential.hpp
+    ./detail/memory.hpp
     ./detail/sorter.hpp
 
     ./detail/util.hpp

@@ -16,6 +16,10 @@
 #include "thread_pool.hpp"
 #include "detail/util.hpp"
 
+#ifndef ENABLE_EQUALITY_BUCKET
+#define ENABLE_EQUALITY_BUCKET true
+#endif
+
 #ifndef BASE_CASE_SIZE
 #define BASE_CASE_SIZE 16
 #endif
@@ -40,13 +44,20 @@ namespace qsmb
      * @tparam base_case_size_ Desired base case threshold
      * @tparam base_case_multiplier_ Multiplier for the base case threshold
      */
-    template <std::ptrdiff_t base_case_size_ = BASE_CASE_SIZE,
+    template <bool enable_equality_bucket_ = ENABLE_EQUALITY_BUCKET,
+              std::ptrdiff_t base_case_size_ = BASE_CASE_SIZE,
               std::ptrdiff_t base_case_multiplier_ = BASE_CASE_MULTIPLIER,
               std::ptrdiff_t block_size_ = BLOCK_SIZE,
               std::ptrdiff_t data_alignment_ = DATA_ALIGNMENT>
     class configuration
     {
     public:
+        /**
+         * @brief Enable equality buckets during parallel classification
+         * 
+         */
+        static constexpr const bool enable_equality_bucket {enable_equality_bucket_};
+
         /**
          * @brief Desired base case threshold
          * 
@@ -129,6 +140,12 @@ namespace qsmb
         using sync = typename thread_pool::sync;
 
         /**
+         * @brief Number of buckets used during parallel classification
+         * 
+         */
+        static constexpr const difference_type num_buckets {2 + config::enable_equality_bucket};
+
+        /**
          * @brief Desired base case threshold
          * 
          */
@@ -162,6 +179,9 @@ namespace qsmb
         }
     };
 
+    #undef ENABLE_EQUALITY_BUCKET
     #undef BASE_CASE_SIZE
     #undef BASE_CASE_MULTIPLIER
+    #undef BLOCK_SIZE
+    #undef DATA_ALIGNMENT
 } // namespace qsmb

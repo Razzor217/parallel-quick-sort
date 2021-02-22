@@ -11,6 +11,7 @@ endif()
 set(HEADERS
     ./detail/aligned_ptr.hpp
     ./detail/block.hpp
+    ./detail/buffer.hpp
 
     ./detail/barrier.hpp
 

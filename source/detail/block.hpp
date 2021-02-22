@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <type_traits>
 #include <utility>
 
@@ -44,6 +45,9 @@ namespace qsmb
              */
             using difference_type = typename config::difference_type;
 
+            using const_reference = const value_type&;
+            using pointer = value_type*;
+
             /**
              * @brief Determine whether data objects have to be initialized manually
              * 
@@ -59,19 +63,19 @@ namespace qsmb
             /**
              * @brief Returns a pointer to the data
              * 
-             * @return value_type* Pointer to data
+             * @return pointer Pointer to data
              */
-            value_type* data()
+            pointer data()
             {
-                return static_cast<value_type*>(static_cast<void*>(storage_));
+                return static_cast<pointer>(static_cast<void*>(storage_));
             }
 
             /**
              * @brief Returns the first element in the block
              * 
-             * @return const value_type& First element
+             * @return const_reference First element
              */
-            const value_type& head()
+            const_reference head()
             {
                 return *data();
             }
@@ -180,7 +184,7 @@ namespace qsmb
         private:
             using storage_type = std::conditional<initialized_storage,
                                                    value_type,
-                                                   std::aligned_storage_t<sizeof(value_type), alignof(value_type)>>
+                                                   std::aligned_storage_t<sizeof(value_type), alignof(value_type)>>;
 
             storage_type storage_[config::block_size];
         };

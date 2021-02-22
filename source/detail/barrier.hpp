@@ -35,10 +35,7 @@ namespace qsmb
                 init_count_ {num_threads}, hit_count_ {num_threads}, flag_ {false}
             {}
 
-            barrier(const barrier&) = delete;
             barrier(barrier&&) = delete;
-
-            barrier& operator =(const barrier&) = delete;
             barrier& operator =(barrier&&) = delete;
 
             /**

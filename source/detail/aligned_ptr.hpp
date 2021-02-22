@@ -44,29 +44,32 @@ namespace qsmb
         class aligned_ptr
         {
         public:
+            using reference = value_type&;
+            using pointer = value_type*;
+
             /**
              * @brief Returns a pointer to the aligned object or `nullptr` 
              * if no object is owned
              * 
-             * @return value_type* Pointer to the aligned object
+             * @return pointer Pointer to the aligned object
              */
-            inline value_type* get() const { return value_; }
+            inline pointer get() const { return value_; }
 
             /**
              * @brief Returns the aligned object owned by `*this`
              * 
-             * @return value_type& Aligned object
+             * @return reference Aligned object
              */
-            inline value_type& operator *() const { return *get(); }
+            inline reference operator *() const { return *get(); }
 
             /**
              * @brief Returns a pointer to the aligned object owned by `*this`
              * 
-             * @return value_type* Pointer to the aligned object
+             * @return pointer Pointer to the aligned object
              * 
              * @see get()
              */
-            inline value_type* operator ->() const { return get(); }
+            inline pointer operator ->() const { return get(); }
 
             /**
              * @brief Default constructor
@@ -131,7 +134,7 @@ namespace qsmb
 
         private:
             char* alloc_ = nullptr;
-            value_type* value_ = nullptr;
+            pointer value_ = nullptr;
         };
 
         /**
@@ -143,26 +146,29 @@ namespace qsmb
         class aligned_ptr<void>
         {
         public:
+            using reference = char&;
+            using pointer = char*;
+
             /**
              * @brief Returns a pointer to the aligned storage owned by `*this`
              * 
-             * @return char* Pointer to the aligned storage
+             * @return pointer Pointer to the aligned storage
              */
-            inline char* get() const { return value_; }
+            inline pointer get() const { return value_; }
 
             /**
              * @brief Returns the aligned storage owned by `*this`
              * 
-             * @return char& Aligned storage
+             * @return reference Aligned storage
              */
-            inline char& operator *() const { return *get(); }
+            inline reference operator *() const { return *get(); }
 
             /**
              * @brief Returns a pointer to the aligned storage owned by `*this`
              * 
-             * @return char* Pointer to the aligned storage
+             * @return pointer Pointer to the aligned storage
              */
-            inline char* operator ->() const { return get(); }
+            inline pointer operator ->() const { return get(); }
 
             /**
              * @brief Default constructor
@@ -225,8 +231,8 @@ namespace qsmb
             }
 
         private:
-            char* alloc_ = nullptr;
-            char* value_ = nullptr;
+            pointer alloc_ = nullptr;
+            pointer value_ = nullptr;
         };
     } // namespace detail
 } // namespace qsmb

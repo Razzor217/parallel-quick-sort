@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <cstddef>
+#include <algorithm>
 #include <type_traits>
 #include <utility>
 
@@ -47,6 +47,9 @@ namespace qsmb
              */
             using difference_type = typename config::difference_type;
 
+            using pointer = value_type*;
+            using const_pointer = const pointer;
+
             /**
              * @brief Check whether a buffer is full
              * 
@@ -63,11 +66,11 @@ namespace qsmb
              * @brief Returns a pointer to the buffer data
              * 
              * @param i Buffer index
-             * @return value_type* Pointer to the buffer data
+             * @return pointer Pointer to the buffer data
              */
-            inline value_type* data(const difference_type i)
+            inline pointer data(const difference_type i)
             {
-                return static_cast<value_type*>(static_cast<void*>(storage_)) + i * config::block_size;
+                return static_cast<pointer>(static_cast<void*>(storage_)) + i * config::block_size;
             }
 
             /**
@@ -128,16 +131,26 @@ namespace qsmb
                 reset(i);
             }
 
+            buffers(char* storage) :
+                storage_ {static_cast<block*>(static_cast<void*>(storage))}
+            {
+                for (difference_type i {}; i < config::num_buckets; ++i)
+                {
+                    reset_buffer(i);
+                    buffer_[i].end = buffer_[i].ptr + config::block_size;
+                }
+            }
+
         private:            
             struct info
             {
-                value_type* ptr;
-                const value_type* end;
+                pointer ptr;
+                const_pointer end;
             };
 
             inline void reset_buffer(const difference_type i)
             {
-                buffer_[i].ptr = static_cast<value_type*>(static_cast<void*>(storage_)) + i * config::block_size;
+                buffer_[i].ptr = static_cast<pointer>(static_cast<void*>(storage_)) + i * config::block_size;
             }
 
         private:

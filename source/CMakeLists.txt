@@ -10,6 +10,8 @@ endif()
 
 set(HEADERS
     ./detail/aligned_ptr.hpp
+    ./detail/block.hpp
+
     ./detail/barrier.hpp
 
     ./detail/base_case.hpp

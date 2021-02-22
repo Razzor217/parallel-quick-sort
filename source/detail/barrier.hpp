@@ -83,7 +83,7 @@ namespace qsmb
             inline void notify_all(std::unique_lock<std::mutex>& lock)
             {
                 hit_count_ = init_count_;
-                flag_ != flag_;
+                flag_ = !flag_;
                 lock.unlock();
                 cv_.notify_all();
             }

@@ -53,17 +53,18 @@
 
 
 
-/*
- * TODO:
- * - add algorithm description (below) to documentation
- * - add description of block permutation
- * - add description of cleanup
- * - complete sorter
- *     - sequential variant (1 thread in group)
- *     - thread pool
- *     - synchronization mechanism (barrier)
- *     - buffers w/ read/write/size
- *     - all phases described below
+/**
+ * 
+ * - @todo add algorithm description (below) to documentation
+ * - @todo add description of block permutation
+ * - @todo add description of cleanup
+ * - @todo complete sorter
+ *     - @todo sequential variant (1 thread in group)
+ *     - @todo thread pool
+ *     - @todo synchronization mechanism (barrier)
+ *     - @todo buffers w/ read/write/size
+ *     - @todo add shared data for groups
+ *     - @todo all phases described below
  */
 
 

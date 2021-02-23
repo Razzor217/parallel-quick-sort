@@ -28,7 +28,7 @@ namespace qsmb
          * @tparam config Sorter configuration
          */
         template <class config>
-        class buffer_storage : public align_pointer<void>
+        class buffer_storage : public aligned_ptr<void>
         {
         public:
             /**
@@ -63,7 +63,7 @@ namespace qsmb
              * @param num_threads Number of threads
              */
             explicit buffer_storage(const difference_type num_threads)
-                : align_pointer<void>(config::data_alignment, num_threads * size_per_thread)
+                : aligned_ptr<void>(config::data_alignment, num_threads * size_per_thread)
             {}
         };
 

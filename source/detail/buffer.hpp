@@ -47,7 +47,16 @@ namespace qsmb
              */
             using difference_type = typename config::difference_type;
 
+            /**
+             * @brief Pointer type of the input data
+             * 
+             */
             using pointer = value_type*;
+
+            /**
+             * @brief Const pointer type of the input data
+             * 
+             */
             using const_pointer = const pointer;
 
             /**
@@ -131,6 +140,11 @@ namespace qsmb
                 reset(i);
             }
 
+            /**
+             * @brief Construct thread-local buffers using specified storage
+             * 
+             * @param storage Pointer to buffer storage
+             */
             buffers(char* storage) :
                 storage_ {static_cast<block*>(static_cast<void*>(storage))}
             {

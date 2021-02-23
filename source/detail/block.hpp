@@ -45,7 +45,16 @@ namespace qsmb
              */
             using difference_type = typename config::difference_type;
 
+            /**
+             * @brief Const reference type of the input data
+             * 
+             */
             using const_reference = const value_type&;
+
+            /**
+             * @brief Pointer type of the input data
+             * 
+             */
             using pointer = value_type*;
 
             /**

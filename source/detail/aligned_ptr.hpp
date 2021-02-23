@@ -44,7 +44,16 @@ namespace qsmb
         class aligned_ptr
         {
         public:
+            /**
+             * @brief Reference type of the aligned_ptr
+             * 
+             */
             using reference = value_type&;
+
+            /**
+             * @brief Pointer type of the aligned_ptr
+             * 
+             */
             using pointer = value_type*;
 
             /**
@@ -139,14 +148,22 @@ namespace qsmb
 
         /**
          * @brief Provides aligned storage without constructing an object
-         * 
-         * @tparam 
+         *
          */
         template <>
         class aligned_ptr<void>
         {
         public:
+            /**
+             * @brief Reference type of the aligned_ptr
+             * 
+             */
             using reference = char&;
+
+            /**
+             * @brief Pointer type of the aligned_ptr
+             * 
+             */
             using pointer = char*;
 
             /**

@@ -29,3 +29,8 @@ of In-Place Parallel Super Scalar Samplesort. Specifically,
 the qsmb::detail::barrier, qsmb::std_thread_pool and qsmb::detail::aligned_ptr classes are 
 adopted almost directly from the sample sort implementation.
 adopted almost directly from the sample sort implementation.
+
+## Current status
+
+The sequential base case as well as base classes needed for the parallel tasks are implemented, but untested.
+The main algorithm phases need to be implemented next (local partitioning, block permutation, cleanup, thread distribution and recursion from task list).
